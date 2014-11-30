@@ -35,16 +35,16 @@ public class PasswordCracker {
 		wordList = getWordList();
 		//printlist(wordList);
 		
-		crackResult = generateCrackResult();
+		generateCrackResult();
 		
-		printMap(crackResult);
+		//printMap(crackResult);
 	}
 	
 	
 	
 	public void printMap(HashMap<String, String> map){
 		for(Map.Entry<String, String> entry : map.entrySet()){
-		    System.out.printf("Key : %s and Value: %s %n", entry.getKey(), entry.getValue());
+		    System.out.printf("Username : %s  Password: %s %n", entry.getKey(), entry.getValue());
 		}
 	}
 	
@@ -54,8 +54,8 @@ public class PasswordCracker {
 	}
 	
 	//cracking raw password
-	private HashMap<String, String> generateCrackResult(){
-		HashMap<String, String> result = new HashMap<String, String>();
+	private void generateCrackResult(){
+		//HashMap<String, String> result = new HashMap<String, String>();
 
 		String username;
 		String password;
@@ -71,23 +71,26 @@ public class PasswordCracker {
 			if(!salt.equals("!") && !salt.equals("*"))
 			{
 				//try on each word
+				boolean found = false;
 				for(int i = 0; i < wordList.size(); i++)
 				{
 					hashedWord = shaEncryptor.sha512Crypt(wordList.get(i).getBytes(), salt);
 					
 					if(hashedWord.equals(password))
 					{
-						result.put(username, wordList.get(i));
-						System.out.println("Username: "+ username +" Password: " + wordList.get(i));
+						System.out.println("Username: " + username + " Password: " + wordList.get(i));
+						found = true;
 						break;
 					}
 				}
+				if(!found)
+					System.out.println("Username: " + username + " Password: PASSWORD NOT IN WORDLIST");
 			}
 			
 			else
-				result.put(username, salt);
+				System.out.println("Username: " + username + " Password: " + salt);
 		}
-		return result;
+		//return result;
 	}
 	
 	//get the salt part from the whole hashed password
@@ -184,7 +187,7 @@ public class PasswordCracker {
 	        while ((line = br.readLine()) != null) 
 	        { 
 	        	String[] split = line.split(":");
-	        	if(Integer.parseInt(split[2]) > 1000)
+	        	if(Integer.parseInt(split[2]) >= 1000)
 	        		userList.add(split[0]);
 	        }
 	        
@@ -198,10 +201,12 @@ public class PasswordCracker {
 	
 	
 	public static void main(String args[]){
-		// use args
-		String wordPath = "src/500-worst-passwords.txt";
-		String passwdPath = "src/passwd";
-		String shadowPath = "src/shadow";
+		//String wordPath = "src/500-worst-passwords.txt";
+		//String passwdPath = "src/passwd";
+		//String shadowPath = "src/shadow";
+		String wordPath = args[0];
+		String passwdPath = args[1];
+		String shadowPath = args[2];
 				
 		PasswordCracker cracker = new PasswordCracker(wordPath, passwdPath, shadowPath);
 		
