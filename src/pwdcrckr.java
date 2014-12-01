@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.codec.digest.Sha2Crypt;
 
 
-public class PasswordCracker {
+public class pwdcrckr {
 	private Sha2Crypt shaEncryptor = new Sha2Crypt();
 	private HashMap<String, String> userpassMap;	//username and hashed password
 	private ArrayList<String> toCrackList;			//username with id>1000
@@ -19,7 +19,7 @@ public class PasswordCracker {
 	private String passwdPath;
 	private String shadowPath;
 	
-	public PasswordCracker(String wordPath, String passwdPath, String shadowPath){
+	public pwdcrckr(String wordPath, String passwdPath, String shadowPath){
 		this.wordPath = wordPath;
 		this.passwdPath = passwdPath;
 		this.shadowPath = shadowPath;
@@ -208,7 +208,7 @@ public class PasswordCracker {
 		String passwdPath = args[1];
 		String shadowPath = args[2];
 				
-		PasswordCracker cracker = new PasswordCracker(wordPath, passwdPath, shadowPath);
+		pwdcrckr cracker = new pwdcrckr(wordPath, passwdPath, shadowPath);
 		
 		cracker.startCracking();
 	}
